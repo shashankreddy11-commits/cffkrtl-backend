@@ -12,8 +12,16 @@ import java.io.IOException;
 public class CoffeeKartelApplication {
 
     public static void main(String[] args) {
+        normalizeDbUrl();
         loadDotEnv();
         SpringApplication.run(CoffeeKartelApplication.class, args);
+    }
+
+    private static void normalizeDbUrl() {
+        String envDbUrl = System.getenv("DB_URL");
+        if (envDbUrl != null && envDbUrl.startsWith("mysql://")) {
+            System.setProperty("DB_URL", "jdbc:" + envDbUrl);
+        }
     }
 
     private static void loadDotEnv() {
